@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Marketing AI Assistant - NIM API</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <link rel="stylesheet" href="gemini-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <span>Digital Marketing AI</span>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="help-btn" id="helpBtn">
+                    <i class="fas fa-question-circle"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Chat Area -->
+        <main class="chat-container">
+            <!-- Welcome Message -->
+            <div class="welcome-section" id="welcomeSection">
+                <div class="welcome-content">
+                    <div class="welcome-icon">🚀</div>
+                    <h1>Digital Marketing AI Assistant</h1>
+                    <p>Get expert advice on SEO, social media, content marketing, PPC, and more!</p>
+                    
+                    <div class="quick-actions">
+                        <button class="quick-action-btn" data-prompt="I have a coffee shop and want to promote it on Instagram. Give me SEO and SMM strategy with keywords, hashtags, and content ideas.">
+                            <i class="fas fa-coffee"></i>
+                            Coffee Shop Promotion
+                        </button>
+                        <button class="quick-action-btn" data-prompt="I run a local restaurant. How can I improve my SEO and social media presence to attract more customers?">
+                            <i class="fas fa-utensils"></i>
+                            Restaurant Marketing
+                        </button>
+                        <button class="quick-action-btn" data-prompt="I'm starting an online clothing store. What SEO keywords and social media strategy should I use?">
+                            <i class="fas fa-tshirt"></i>
+                            E-commerce Strategy
+                        </button>
+                        <button class="quick-action-btn" data-prompt="I have a fitness business. How can I optimize my website SEO and create engaging social media content?">
+                            <i class="fas fa-dumbbell"></i>
+                            Fitness Business
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chatMessages"></div>
+
+            <!-- Typing Indicator -->
+            <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span class="typing-text">AI is thinking...</span>
+            </div>
+        </main>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <div class="input-container">
+                <textarea 
+                    id="messageInput" 
+                    class="message-input" 
+                    placeholder="Ask me about digital marketing strategies, SEO, social media, PPC, content marketing, analytics, or any other marketing topic..."
+                    rows="1"
+                ></textarea>
+                <div class="input-actions">
+                    <button class="voice-btn" id="voiceBtn" title="Voice Input">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="send-btn" id="sendBtn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="input-footer">
+                <small>Powered by NVIDIA NIM AI • Your conversations are private</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>How to use Digital Marketing AI</h3>
+                <button class="close-btn" id="closeHelpModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="help-section">
+                    <h4><i class="fas fa-lightbulb"></i> What you can ask about:</h4>
+                    <ul>
+                        <li><strong>Business Promotion:</strong> "I have a coffee shop, help me promote on Instagram"</li>
+                        <li><strong>SEO Strategy:</strong> Keywords, website optimization, local SEO, content strategy</li>
+                        <li><strong>Social Media Marketing:</strong> Platform strategies, hashtags, content ideas, engagement</li>
+                        <li><strong>Brand Building:</strong> Business names, brand voice, messaging, visual content</li>
+                        <li><strong>Implementation:</strong> Step-by-step plans, tools needed, timelines, success metrics</li>
+                        <li><strong>Industry Specific:</strong> Restaurant, e-commerce, fitness, beauty, tech, etc.</li>
+                    </ul>
+                </div>
+                <div class="help-section">
+                    <h4><i class="fas fa-keyboard"></i> Quick Tips:</h4>
+                    <ul>
+                        <li>Use specific questions for better answers</li>
+                        <li>Ask for step-by-step guides</li>
+                        <li>Request examples and case studies</li>
+                        <li>Ask for the latest trends and updates</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Digital Marketing AI Chatbot with Direct NIM API Access
+        class DigitalMarketingChatbot {
+            constructor() {
+                this.conversationHistory = [];
+                this.isTyping = false;
+                this.currentTheme = localStorage.getItem('theme') || 'light';
+                
+                this.initializeElements();
+                this.setupEventListeners();
+                this.applyTheme();
+            }
+
+            initializeElements() {
+                // Core elements
+                this.messageInput = document.getElementById('messageInput');
+                this.sendBtn = document.getElementById('sendBtn');
+                this.voiceBtn = document.getElementById('voiceBtn');
+                this.chatMessages = document.getElementById('chatMessages');
+                this.typingIndicator = document.getElementById('typingIndicator');
+                this.welcomeSection = document.getElementById('welcomeSection');
+                
+                // Modals
+                this.helpModal = document.getElementById('helpModal');
+                
+                // Buttons
+                this.themeToggle = document.getElementById('themeToggle');
+                this.helpBtn = document.getElementById('helpBtn');
+                this.closeHelpModal = document.getElementById('closeHelpModal');
+                
+                // Quick action buttons
+                this.quickActionBtns = document.querySelectorAll('.quick-action-btn');
+            }
+
+            setupEventListeners() {
+                // Send message
+                this.sendBtn.addEventListener('click', () => this.sendMessage());
+                this.messageInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' && !e.shiftKey) {
+                        e.preventDefault();
+                        this.sendMessage();
+                    }
+                });
+
+                // Auto-resize textarea
+                this.messageInput.addEventListener('input', () => this.autoResizeTextarea());
+
+                // Voice input
+                this.voiceBtn.addEventListener('click', () => this.startVoiceInput());
+
+                // Theme toggle
+                this.themeToggle.addEventListener('click', () => this.toggleTheme());
+
+                // Help modal
+                this.helpBtn.addEventListener('click', () => this.showModal(this.helpModal));
+                this.closeHelpModal.addEventListener('click', () => this.hideModal(this.helpModal));
+
+                // Quick action buttons
+                this.quickActionBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const prompt = btn.getAttribute('data-prompt');
+                        this.messageInput.value = prompt;
+                        this.sendMessage();
+                    });
+                });
+
+                // Close modals on backdrop click
+                this.helpModal.addEventListener('click', (e) => {
+                    if (e.target === this.helpModal) {
+                        this.hideModal(this.helpModal);
+                    }
+                });
+
+                // Close modals on Escape key
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.hideModal(this.helpModal);
+                    }
+                });
+            }
+
+            async sendMessage() {
+                const message = this.messageInput.value.trim();
+                if (!message || this.isTyping) return;
+
+                // Add user message to chat
+                this.addMessageToChat('user', message);
+                this.messageInput.value = '';
+                this.autoResizeTextarea();
+
+                // Hide welcome section after first message
+                if (this.welcomeSection.style.display !== 'none') {
+                    this.welcomeSection.style.display = 'none';
+                }
+
+                // Show typing indicator
+                this.showTypingIndicator();
+
+                try {
+                    // Add to conversation history
+                    this.conversationHistory.push({ role: 'user', parts: [{ text: message }] });
+
+                    // Call NIM API directly
+                    const response = await this.callNIMAPI(message);
+                    
+                    // Add AI response to conversation history
+                    this.conversationHistory.push({ role: 'model', parts: [{ text: response }] });
+
+                    // Add AI message to chat
+                    this.addMessageToChat('assistant', response);
+
+                } catch (error) {
+                    console.error('Error calling NIM API:', error);
+                    const errorMessage = 'Sorry, I encountered an error. Please check your internet connection and try again.';
+                    this.addMessageToChat('assistant', errorMessage);
+                } finally {
+                    this.hideTypingIndicator();
+                }
+            }
+
+            async callNIMAPI(message) {
+                const invokeUrl = "https://integrate.api.nvidia.com/v1/chat/completions";
+                
+                const payload = {
+                    "model": "meta/llama-4-maverick-17b-128e-instruct",
+                    "messages": [{"role": "user", "content": this.buildPrompt(message)}],
+                    "max_tokens": 1024,
+                    "temperature": 0.7,
+                    "top_p": 0.95,
+                    "frequency_penalty": 0.0,
+                    "presence_penalty": 0.0,
+                    "stream": false
+                };
+
+                const response = await fetch(invokeUrl, {
+                    method: 'POST',
+                    headers: {
+                        "Authorization": "Bearer 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",
+                        "Accept": "application/json",
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(`API Error: ${errorData.error?.message || response.statusText}`);
+                }
+
+                const data = await response.json();
+                return data.choices[0].message.content;
+            }
+
+            buildPrompt(message) {
+                return `You are a Digital Marketing AI Assistant specializing in SEO and Social Media Marketing (SMM). You provide comprehensive, actionable advice for businesses looking to improve their online presence.
+
+When responding to business promotion requests, always provide:
+
+**SEO Strategy:**
+- Relevant keywords and phrases for their industry/business
+- Website optimization suggestions
+- Local SEO recommendations (if applicable)
+- Content strategy for better search rankings
+- Technical SEO improvements
+
+**Social Media Marketing (SMM):**
+- Platform-specific strategies (Instagram, Facebook, TikTok, etc.)
+- Content ideas and posting schedules
+- Hashtag strategies
+- Engagement tactics
+- Influencer collaboration suggestions
+
+**Brand & Content:**
+- Business name suggestions (if requested)
+- Brand voice and messaging recommendations
+- Content themes and topics
+- Visual content ideas
+
+**Practical Implementation:**
+- Step-by-step action plans
+- Tools and resources needed
+- Timeline for implementation
+- Success metrics to track
+
+**For each recommendation, explain:**
+- Why it works
+- How to implement it
+- Expected results
+- Common mistakes to avoid
+
+User Question: ${message}
+
+Provide your response in a clear, structured format with specific, actionable advice that a business owner can implement immediately. Use bullet points, numbered lists, and clear headings for easy reading.`;
+            }
+
+            addMessageToChat(role, content) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${role}`;
+                
+                const avatar = document.createElement('div');
+                avatar.className = 'message-avatar';
+                avatar.innerHTML = role === 'user' ? '👤' : '🤖';
+                
+                const messageContent = document.createElement('div');
+                messageContent.className = 'message-content';
+                messageContent.innerHTML = this.formatMessage(content);
+                
+                messageDiv.appendChild(avatar);
+                messageDiv.appendChild(messageContent);
+                
+                this.chatMessages.appendChild(messageDiv);
+                
+                // Scroll to bottom
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+
+            formatMessage(content) {
+                // Convert markdown-like formatting to HTML
+                return content
+                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                    .replace(/`(.*?)`/g, '<code>$1</code>')
+                    .replace(/\n/g, '<br>');
+            }
+
+            showTypingIndicator() {
+                this.isTyping = true;
+                this.typingIndicator.style.display = 'flex';
+                this.chatMessages.scrollTop = this.chatMessages.scrollHeight;
+            }
+
+            hideTypingIndicator() {
+                this.isTyping = false;
+                this.typingIndicator.style.display = 'none';
+            }
+
+            startVoiceInput() {
+                if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+                    alert('Speech recognition is not supported in this browser.');
+                    return;
+                }
+
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = new SpeechRecognition();
+                
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'en-US';
+                
+                recognition.onstart = () => {
+                    this.voiceBtn.style.color = '#ef4444';
+                    this.voiceBtn.innerHTML = '<i class="fas fa-stop"></i>';
+                };
+                
+                recognition.onresult = (event) => {
+                    const transcript = event.results[0][0].transcript;
+                    this.messageInput.value = transcript;
+                    this.autoResizeTextarea();
+                };
+                
+                recognition.onend = () => {
+                    this.voiceBtn.style.color = '';
+                    this.voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                };
+                
+                recognition.onerror = (event) => {
+                    console.error('Speech recognition error:', event.error);
+                    this.voiceBtn.style.color = '';
+                    this.voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                };
+                
+                recognition.start();
+            }
+
+            autoResizeTextarea() {
+                this.messageInput.style.height = 'auto';
+                this.messageInput.style.height = Math.min(this.messageInput.scrollHeight, 120) + 'px';
+            }
+
+            toggleTheme() {
+                this.currentTheme = this.currentTheme === 'light' ? 'dark' : 'light';
+                localStorage.setItem('theme', this.currentTheme);
+                this.applyTheme();
+            }
+
+            applyTheme() {
+                document.documentElement.setAttribute('data-theme', this.currentTheme);
+                
+                const icon = this.themeToggle.querySelector('i');
+                if (this.currentTheme === 'dark') {
+                    icon.className = 'fas fa-sun';
+                } else {
+                    icon.className = 'fas fa-moon';
+                }
+            }
+
+            showModal(modal) {
+                modal.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            hideModal(modal) {
+                modal.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+        }
+
+        // Initialize the chatbot when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            new DigitalMarketingChatbot();
+        });
+    </script>
+</body>
+</html>

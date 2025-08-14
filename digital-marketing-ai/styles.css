@@ -1,0 +1,271 @@
+:root {
+    --background-color-light: #f7f7f7;
+    --text-color-light: #000000;
+    --input-bg-color-light: #ffffff;
+    --border-color-light: #e0e0e0;
+    --button-bg-color-light: #000000;
+    --button-text-color-light: #ffffff;
+
+    --background-color-dark: #1a1a1a;
+    --text-color-dark: #e0e0e0;
+    --input-bg-color-dark: #2a2a2a;
+    --border-color-dark: #444444;
+    --button-bg-color-dark: #e0e0e0;
+    --button-text-color-dark: #1a1a1a;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    margin: 0;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+body.light {
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+    --input-bg-color: var(--input-bg-color-light);
+    --border-color: var(--border-color-light);
+    --button-bg-color: var(--button-bg-color-light);
+    --button-text-color: var(--button-text-color-light);
+}
+
+body.dark {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
+    --input-bg-color: var(--input-bg-color-dark);
+    --border-color: var(--border-color-dark);
+    --button-bg-color: var(--button-bg-color-dark);
+    --button-text-color: var(--button-text-color-dark);
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100vh;
+    width: 100%;
+}
+
+.header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    box-sizing: border-box;
+}
+
+.logo {
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.nav-buttons {
+    display: flex;
+    align-items: center;
+}
+
+.icon-button {
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-left: 20px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.icon-button:hover {
+    transform: scale(1.2) rotate(10deg);
+}
+
+.nav-buttons button {
+    background-color: var(--button-bg-color);
+    color: var(--button-text-color);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-left: 20px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.nav-buttons button:hover {
+    background-color: #333;
+}
+
+.main-content {
+    text-align: center;
+}
+
+.grok-logo {
+    font-size: 3rem;
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+
+.chat-input-container {
+    background-color: var(--input-bg-color);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    width: 600px;
+    display: flex;
+    align-items: center;
+    transition: box-shadow 0.3s ease-in-out;
+    animation: pulse 2s infinite;
+}
+
+.chat-input-container:focus-within {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+}
+
+.chat-input {
+    flex-grow: 1;
+    border: none;
+    outline: none;
+    font-size: 1rem;
+    background-color: transparent;
+}
+
+.social-media-options {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.social-button {
+    background-color: var(--input-bg-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+    padding: 10px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+.social-button:hover {
+    background-color: var(--border-color);
+    transform: translateY(-2px);
+}
+
+.social-button i {
+    margin-right: 8px;
+}
+
+.mic-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+
+.mic-icon:hover {
+    transform: scale(1.2);
+}
+
+.footer {
+    padding: 20px;
+    font-size: 0.8rem;
+    color: #888;
+}
+
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.modal-content {
+    background-color: var(--input-bg-color);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    width: 400px;
+    max-width: 90%;
+    position: relative;
+    animation: popIn 0.3s ease-in-out;
+}
+
+.close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-content input {
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.modal-content button {
+    background-color: var(--button-bg-color);
+    color: var(--button-text-color);
+    border: none;
+    padding: 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.modal-content button:hover {
+    background-color: #333;
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+    50% {
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+    100% {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    }
+}

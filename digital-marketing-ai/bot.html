@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Digital Marketing AI</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        function App() {
+            const [showSignUp, setShowSignUp] = useState(false);
+            const [showSignIn, setShowSignIn] = useState(false);
+            const [theme, setTheme] = useState('light');
+
+            useEffect(() => {
+                document.body.className = theme;
+            }, [theme]);
+
+            const toggleTheme = () => {
+                setTheme(prev => prev === 'light' ? 'dark' : 'light');
+            };
+
+            return (
+                <>
+                    <Header 
+                        onSignUp={() => setShowSignUp(true)} 
+                        onSignIn={() => setShowSignIn(true)}
+                        toggleTheme={toggleTheme}
+                        currentTheme={theme}
+                    />
+                    <MainContent />
+                    <Footer />
+                    {showSignUp && <SignUpModal onClose={() => setShowSignUp(false)} />}
+                    {showSignIn && <SignInModal onClose={() => setShowSignIn(false)} />}
+                </>
+            );
+        }
+
+        function Header({ onSignUp, onSignIn, toggleTheme, currentTheme }) {
+            return (
+                <header className="header">
+                    <div className="logo">🧠</div>
+                    <div className="nav-buttons">
+                        <i className="fas fa-cog icon-button"></i>
+                        <i className="fas fa-question-circle icon-button"></i>
+                        <i 
+                            className={`fas ${currentTheme === 'light' ? 'fa-moon' : 'fa-sun'} icon-button`} 
+                            onClick={toggleTheme}
+                        ></i>
+                        <button onClick={onSignUp}>Sign Up</button>
+                        <button onClick={onSignIn}>Sign In</button>
+                    </div>
+                </header>
+            );
+        }
+
+        function MainContent() {
+            const [message, setMessage] = useState("");
+            const [reply, setReply] = useState("");
+            const [loading, setLoading] = useState(false);
+
+            // Speech recognition setup
+            useEffect(() => {
+                const micIcon = document.querySelector('.mic-icon');
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                const recognition = SpeechRecognition ? new SpeechRecognition() : null;
+
+                if (recognition && micIcon) {
+                    recognition.continuous = false;
+                    recognition.lang = 'en-US';
+                    recognition.interimResults = false;
+                    recognition.maxAlternatives = 1;
+
+                    micIcon.addEventListener('click', () => {
+                        try {
+                            recognition.start();
+                            micIcon.style.color = 'red';
+                        } catch (e) {
+                            alert('Speech recognition already active or not supported.');
+                        }
+                    });
+
+                    recognition.addEventListener('result', (event) => {
+                        const transcript = event.results[0][0].transcript;
+                        setMessage(transcript);
+                    });
+
+                    recognition.addEventListener('speechend', () => {
+                        recognition.stop();
+                        micIcon.style.color = '';
+                    });
+
+                    recognition.addEventListener('error', (event) => {
+                        micIcon.style.color = '';
+                        alert('Speech recognition error: ' + event.error);
+                    });
+                } else if (micIcon) {
+                    micIcon.style.display = 'none';
+                }
+            }, []);
+
+            const sendMessage = async () => {
+                if (!message.trim()) return;
+                setLoading(true);
+                try {
+                    const res = await fetch("http://localhost:3000/api/chat", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ message })
+                    });
+                    const data = await res.json();
+                    setReply(data.reply);
+                } catch (error) {
+                    setReply("Error connecting to AI.");
+                } finally {
+                    setLoading(false);
+                }
+            };
+
+            return (
+                <main className="main-content">
+                    <div className="grok-logo">Digital Marketing AI</div>
+
+                    <div className="chat-input-container">
+                        <input 
+                            type="text" 
+                            className="chat-input" 
+                            placeholder="What do you want to know?" 
+                            value={message}
+                            onChange={(e) => setMessage(e.target.value)}
+                        />
+                        <i className="fas fa-microphone mic-icon"></i>
+                        <button onClick={sendMessage}>Ask AI</button>
+                    </div>
+
+                    {loading && <div className="ai-reply">Thinking...</div>}
+                    {reply && !loading && (
+                        <div className="ai-reply"><strong>AI:</strong> {reply}</div>
+                    )}
+
+                    <div className="social-media-options">
+                        <button className="social-button"><i className="fab fa-facebook"></i> Facebook</button>
+                        <button className="social-button"><i className="fab fa-instagram"></i> Instagram</button>
+                        <button className="social-button"><i className="fab fa-linkedin"></i> LinkedIn</button>
+                        <button className="social-button">X</button>
+                    </div>
+                </main>
+            );
+        }
+
+        function Footer() {
+            return (
+                <footer className="footer">
+                    By messaging, you agree to our Terms and Privacy Policy.
+                </footer>
+            );
+        }
+
+        function Modal({ children, onClose }) {
+            return (
+                <div className="modal-backdrop">
+                    <div className="modal-content">
+                        <button className="close-button" onClick={onClose}>&times;</button>
+                        {children}
+                    </div>
+                </div>
+            );
+        }
+
+        function SignUpModal({ onClose }) {
+            return (
+                <Modal onClose={onClose}>
+                    <h2>Create Account</h2>
+                    <form>
+                        <input type="text" placeholder="Username" />
+                        <input type="email" placeholder="Email" />
+                        <input type="password" placeholder="Password" />
+                        <button type="submit">Sign Up</button>
+                    </form>
+                </Modal>
+            );
+        }
+
+        function SignInModal({ onClose }) {
+            return (
+                <Modal onClose={onClose}>
+                    <h2>Sign In</h2>
+                    <form>
+                        <input type="email" placeholder="Email" />
+                        <input type="password" placeholder="Password" />
+                        <button type="submit">Sign In</button>
+                    </form>
+                </Modal>
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>

@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Marketing AI Agent - Smart Marketing Solutions</title>
+    <meta name="description" content="Get personalized digital marketing strategies powered by AI. Optimize your marketing campaigns with intelligent recommendations.">
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤖</text></svg>">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header Styles */
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            color: #666;
+            font-weight: 400;
+        }
+
+        /* Main Content Grid */
+        .main-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+
+        /* Input Section */
+        .input-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .input-section h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e1e5e9;
+            border-radius: 12px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            background: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Suggestions Section */
+        .suggestions-section {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .suggestions-section h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .suggestion-card {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .suggestion-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .suggestion-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #333;
+        }
+
+        .suggestion-card p {
+            color: #666;
+            line-height: 1.5;
+        }
+
+        .suggestion-card .priority {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+            margin-top: 10px;
+        }
+
+        .priority.high {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .priority.medium {
+            background: #fef3c7;
+            color: #d97706;
+        }
+
+        .priority.low {
+            background: #dcfce7;
+            color: #16a34a;
+        }
+
+        /* Analytics Dashboard */
+        .analytics-dashboard {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            grid-column: 1 / -1;
+        }
+
+        .analytics-dashboard h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .metric-card .metric-value {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .metric-card .metric-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Feature Icons */
+        .feature-icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
+            color: #667eea;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header,
+            .input-section,
+            .suggestions-section,
+            .analytics-dashboard {
+                padding: 20px;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Screen */
+        #loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-content {
+            text-align: center;
+            color: white;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255,255,255,0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        .loading-text {
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loading-screen">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <h2 class="loading-text">Loading AI Agent...</h2>
+        </div>
+    </div>
+
+    <!-- Main Application -->
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        // Main App Component
+        function App() {
+            const [formData, setFormData] = useState({
+                businessName: '',
+                industry: '',
+                targetAudience: '',
+                budget: '',
+                goals: '',
+                currentChallenges: '',
+                preferredChannels: []
+            });
+            
+            const [suggestions, setSuggestions] = useState([]);
+            const [isLoading, setIsLoading] = useState(false);
+            const [analytics, setAnalytics] = useState({
+                impressions: 0,
+                clicks: 0,
+                conversions: 0,
+                roi: 0
+            });
+
+            // Handle form input changes
+            const handleInputChange = (e) => {
+                const { name, value, type, checked } = e.target;
+                
+                if (type === 'checkbox') {
+                    setFormData(prev => ({
+                        ...prev,
+                        preferredChannels: checked 
+                            ? [...prev.preferredChannels, value]
+                            : prev.preferredChannels.filter(channel => channel !== value)
+                    }));
+                } else {
+                    setFormData(prev => ({
+                        ...prev,
+                        [name]: value
+                    }));
+                }
+            };
+
+            // Generate AI suggestions based on form data
+            const generateSuggestions = () => {
+                setIsLoading(true);
+                
+                // Simulate AI processing delay
+                setTimeout(() => {
+                    const newSuggestions = getAISuggestions(formData);
+                    setSuggestions(newSuggestions);
+                    setIsLoading(false);
+                    
+                    // Update analytics with simulated data
+                    setAnalytics({
+                        impressions: Math.floor(Math.random() * 50000) + 10000,
+                        clicks: Math.floor(Math.random() * 5000) + 1000,
+                        conversions: Math.floor(Math.random() * 500) + 100,
+                        roi: (Math.random() * 300 + 150).toFixed(1)
+                    });
+                }, 2000);
+            };
+
+            // AI suggestion logic
+            const getAISuggestions = (data) => {
+                const suggestions = [];
+                
+                // Content Marketing Suggestions
+                if (data.goals.includes('brand awareness') || data.goals.includes('engagement')) {
+                    suggestions.push({
+                        id: 1,
+                        title: 'Content Marketing Strategy',
+                        description: `Create valuable, industry-specific content for ${data.industry}. Focus on educational blog posts, infographics, and video content that addresses your target audience's pain points.`,
+                        priority: 'high',
+                        estimatedImpact: 'High',
+                        timeframe: '2-3 months'
+                    });
+                }
+
+                // Social Media Suggestions
+                if (data.preferredChannels.includes('social-media')) {
+                    suggestions.push({
+                        id: 2,
+                        title: 'Social Media Optimization',
+                        description: `Develop a consistent posting schedule across platforms. Use platform-specific content formats and engage with your ${data.targetAudience} through interactive posts and stories.`,
+                        priority: 'high',
+                        estimatedImpact: 'Medium',
+                        timeframe: '1-2 months'
+                    });
+                }
+
+                // SEO Suggestions
+                if (data.preferredChannels.includes('seo')) {
+                    suggestions.push({
+                        id: 3,
+                        title: 'Search Engine Optimization',
+                        description: `Optimize your website for industry-specific keywords. Focus on local SEO if targeting local customers, and create location-based landing pages.`,
+                        priority: 'medium',
+                        estimatedImpact: 'High',
+                        timeframe: '3-6 months'
+                    });
+                }
+
+                // Email Marketing
+                if (data.preferredChannels.includes('email')) {
+                    suggestions.push({
+                        id: 4,
+                        title: 'Email Marketing Automation',
+                        description: `Set up automated email sequences for lead nurturing. Create personalized content based on customer behavior and preferences.`,
+                        priority: 'medium',
+                        estimatedImpact: 'Medium',
+                        timeframe: '1 month'
+                    });
+                }
+
+                // PPC Advertising
+                if (data.preferredChannels.includes('ppc') && parseInt(data.budget) > 1000) {
+                    suggestions.push({
+                        id: 5,
+                        title: 'Pay-Per-Click Advertising',
+                        description: `Launch targeted Google Ads and social media advertising campaigns. Focus on high-intent keywords and retargeting website visitors.`,
+                        priority: 'high',
+                        estimatedImpact: 'High',
+                        timeframe: '2-4 weeks'
+                    });
+                }
+
+                // Influencer Marketing
+                if (data.targetAudience.includes('millennials') || data.targetAudience.includes('gen z')) {
+                    suggestions.push({
+                        id: 6,
+                        title: 'Influencer Partnerships',
+                        description: `Collaborate with micro-influencers in your industry. Focus on authentic partnerships that align with your brand values and target audience.`,
+                        priority: 'low',
+                        estimatedImpact: 'Medium',
+                        timeframe: '1-2 months'
+                    });
+                }
+
+                // Analytics and Tracking
+                suggestions.push({
+                    id: 7,
+                    title: 'Analytics Implementation',
+                    description: `Set up comprehensive tracking with Google Analytics 4, Facebook Pixel, and conversion tracking. Create custom dashboards for monitoring KPIs.`,
+                    priority: 'high',
+                    estimatedImpact: 'High',
+                    timeframe: '1-2 weeks'
+                });
+
+                return suggestions;
+            };
+
+            return (
+                <div className="container">
+                    <Header />
+                    <div className="main-content">
+                        <InputSection 
+                            formData={formData}
+                            handleInputChange={handleInputChange}
+                            generateSuggestions={generateSuggestions}
+                            isLoading={isLoading}
+                        />
+                        <SuggestionsSection 
+                            suggestions={suggestions}
+                            isLoading={isLoading}
+                        />
+                    </div>
+                    <AnalyticsDashboard analytics={analytics} />
+                </div>
+            );
+        }
+
+        // Header Component
+        function Header() {
+            return (
+                <div className="header">
+                    <h1>
+                        <i className="fas fa-robot feature-icon"></i>
+                        Digital Marketing AI Agent
+                    </h1>
+                    <p>Get personalized marketing strategies powered by artificial intelligence</p>
+                </div>
+            );
+        }
+
+        // Input Section Component
+        function InputSection({ formData, handleInputChange, generateSuggestions, isLoading }) {
+            return (
+                <div className="input-section">
+                    <h2>
+                        <i className="fas fa-chart-line feature-icon"></i>
+                        Business Information
+                    </h2>
+                    
+                    <div className="form-group">
+                        <label htmlFor="businessName">Business Name</label>
+                        <input
+                            type="text"
+                            id="businessName"
+                            name="businessName"
+                            value={formData.businessName}
+                            onChange={handleInputChange}
+                            placeholder="Enter your business name"
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="industry">Industry</label>
+                        <select
+                            id="industry"
+                            name="industry"
+                            value={formData.industry}
+                            onChange={handleInputChange}
+                        >
+                            <option value="">Select Industry</option>
+                            <option value="technology">Technology</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="finance">Finance</option>
+                            <option value="retail">Retail</option>
+                            <option value="education">Education</option>
+                            <option value="real-estate">Real Estate</option>
+                            <option value="food-beverage">Food & Beverage</option>
+                            <option value="automotive">Automotive</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="targetAudience">Target Audience</label>
+                        <input
+                            type="text"
+                            id="targetAudience"
+                            name="targetAudience"
+                            value={formData.targetAudience}
+                            onChange={handleInputChange}
+                            placeholder="e.g., Young professionals, Small business owners"
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="budget">Monthly Marketing Budget ($)</label>
+                        <select
+                            id="budget"
+                            name="budget"
+                            value={formData.budget}
+                            onChange={handleInputChange}
+                        >
+                            <option value="">Select Budget Range</option>
+                            <option value="500">$500 - $1,000</option>
+                            <option value="1000">$1,000 - $5,000</option>
+                            <option value="5000">$5,000 - $10,000</option>
+                            <option value="10000">$10,000 - $25,000</option>
+                            <option value="25000">$25,000+</option>
+                        </select>
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="goals">Marketing Goals</label>
+                        <textarea
+                            id="goals"
+                            name="goals"
+                            value={formData.goals}
+                            onChange={handleInputChange}
+                            placeholder="e.g., Increase brand awareness, Generate leads, Drive sales"
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label htmlFor="currentChallenges">Current Marketing Challenges</label>
+                        <textarea
+                            id="currentChallenges"
+                            name="currentChallenges"
+                            value={formData.currentChallenges}
+                            onChange={handleInputChange}
+                            placeholder="Describe your main marketing challenges"
+                        />
+                    </div>
+
+                    <div className="form-group">
+                        <label>Preferred Marketing Channels</label>
+                        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '8px' }}>
+                            {[
+                                { value: 'social-media', label: 'Social Media Marketing' },
+                                { value: 'seo', label: 'Search Engine Optimization' },
+                                { value: 'ppc', label: 'Pay-Per-Click Advertising' },
+                                { value: 'email', label: 'Email Marketing' },
+                                { value: 'content', label: 'Content Marketing' },
+                                { value: 'influencer', label: 'Influencer Marketing' }
+                            ].map(channel => (
+                                <label key={channel.value} style={{ display: 'flex', alignItems: 'center', fontWeight: 'normal' }}>
+                                    <input
+                                        type="checkbox"
+                                        value={channel.value}
+                                        checked={formData.preferredChannels.includes(channel.value)}
+                                        onChange={handleInputChange}
+                                        style={{ marginRight: '8px' }}
+                                    />
+                                    {channel.label}
+                                </label>
+                            ))}
+                        </div>
+                    </div>
+
+                    <button 
+                        className="btn-primary" 
+                        onClick={generateSuggestions}
+                        disabled={isLoading}
+                    >
+                        {isLoading ? (
+                            <>
+                                <i className="fas fa-spinner fa-spin" style={{ marginRight: '8px' }}></i>
+                                Generating Suggestions...
+                            </>
+                        ) : (
+                            <>
+                                <i className="fas fa-magic" style={{ marginRight: '8px' }}></i>
+                                Get AI Suggestions
+                            </>
+                        )}
+                    </button>
+                </div>
+            );
+        }
+
+        // Suggestions Section Component
+        function SuggestionsSection({ suggestions, isLoading }) {
+            return (
+                <div className="suggestions-section">
+                    <h2>
+                        <i className="fas fa-lightbulb feature-icon"></i>
+                        AI Marketing Suggestions
+                    </h2>
+                    
+                    {isLoading ? (
+                        <div className="loading">
+                            <div className="spinner"></div>
+                        </div>
+                    ) : suggestions.length > 0 ? (
+                        suggestions.map(suggestion => (
+                            <div key={suggestion.id} className="suggestion-card">
+                                <h3>{suggestion.title}</h3>
+                                <p>{suggestion.description}</p>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '10px' }}>
+                                    <span className={`priority ${suggestion.priority}`}>
+                                        {suggestion.priority.toUpperCase()} PRIORITY
+                                    </span>
+                                    <small style={{ color: '#888' }}>
+                                        Impact: {suggestion.estimatedImpact} | Timeline: {suggestion.timeframe}
+                                    </small>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <div style={{ textAlign: 'center', padding: '40px', color: '#666' }}>
+                            <i className="fas fa-robot" style={{ fontSize: '3rem', marginBottom: '20px', opacity: 0.3 }}></i>
+                            <p>Fill out the form and click "Get AI Suggestions" to receive personalized marketing recommendations.</p>
+                        </div>
+                    )}
+                </div>
+            );
+        }
+
+        // Analytics Dashboard Component
+        function AnalyticsDashboard({ analytics }) {
+            return (
+                <div className="analytics-dashboard">
+                    <h2>
+                        <i className="fas fa-chart-bar feature-icon"></i>
+                        Marketing Analytics Dashboard
+                    </h2>
+                    <div className="metrics-grid">
+                        <div className="metric-card">
+                            <div className="metric-value">{analytics.impressions.toLocaleString()}</div>
+                            <div className="metric-label">Total Impressions</div>
+                        </div>
+                        <div className="metric-card">
+                            <div className="metric-value">{analytics.clicks.toLocaleString()}</div>
+                            <div className="metric-label">Total Clicks</div>
+                        </div>
+                        <div className="metric-card">
+                            <div className="metric-value">{analytics.conversions.toLocaleString()}</div>
+                            <div className="metric-label">Conversions</div>
+                        </div>
+                        <div className="metric-card">
+                            <div className="metric-value">{analytics.roi}%</div>
+                            <div className="metric-label">ROI</div>
+                        </div>
+                    </div>
+                </div>
+            );
+        }
+
+        // Render the App
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+
+    <!-- Loading Screen Script -->
+    <script>
+        // Hide loading screen after page loads
+        window.addEventListener('load', function() {
+            setTimeout(function() {
+                const loadingScreen = document.getElementById('loading-screen');
+                loadingScreen.style.opacity = '0';
+                setTimeout(function() {
+                    loadingScreen.style.display = 'none';
+                }, 500);
+            }, 1000);
+        });
+
+        // Analytics tracking
+        console.log('Digital Marketing AI Agent loaded successfully');
+        
+        function trackEvent(eventName, properties = {}) {
+            console.log('Event tracked:', eventName, properties);
+        }
+        
+        window.trackSuggestionGeneration = function(formData) {
+            trackEvent('suggestions_generated', {
+                industry: formData.industry,
+                budget: formData.budget,
+                channels: formData.preferredChannels
+            });
+        };
+    </script>
+</body>
+</html>
