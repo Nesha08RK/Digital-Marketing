@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Marketing AI Assistant</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>">
+    <link rel="stylesheet" href="gemini-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-rocket"></i>
+                <span>ClickFox AI</span>
+            </div>
+            <div class="header-actions">
+                <button class="theme-toggle" id="themeToggle">
+                    <i class="fas fa-moon"></i>
+                </button>
+                <button class="help-btn" id="helpBtn">
+                    <i class="fas fa-question-circle"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Chat Area -->
+        <main class="chat-container">
+            <!-- Welcome Message -->
+            <div class="welcome-section" id="welcomeSection">
+                <div class="welcome-content">
+                    <div class="welcome-icon">🚀</div>
+                    <h1>Digital Marketing AI Assistant</h1>
+                    <p>Get expert advice on SEO, social media, content marketing, PPC, and more!</p>
+                    
+                    <div class="quick-actions">
+                        <button class="quick-action-btn" data-prompt="I have a coffee shop and want to promote it on Instagram. Give me SEO and SMM strategy with keywords, hashtags, and content ideas.">
+                            <i class="fas fa-coffee"></i>
+                            Coffee Shop Promotion
+                        </button>
+                        <button class="quick-action-btn" data-prompt="I run a local restaurant. How can I improve my SEO and social media presence to attract more customers?">
+                            <i class="fas fa-utensils"></i>
+                            Restaurant Marketing
+                        </button>
+                        <button class="quick-action-btn" data-prompt="I'm starting an online clothing store. What SEO keywords and social media strategy should I use?">
+                            <i class="fas fa-tshirt"></i>
+                            E-commerce Strategy
+                        </button>
+                        <button class="quick-action-btn" data-prompt="I have a fitness business. How can I optimize my website SEO and create engaging social media content?">
+                            <i class="fas fa-dumbbell"></i>
+                            Fitness Business
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Messages -->
+            <div class="chat-messages" id="chatMessages"></div>
+
+            <!-- Typing Indicator -->
+            <div class="typing-indicator" id="typingIndicator" style="display: none;">
+                <div class="typing-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <span class="typing-text">AI is thinking...</span>
+            </div>
+        </main>
+
+        <!-- Input Area -->
+        <div class="input-area">
+            <div class="input-container">
+                <textarea 
+                    id="messageInput" 
+                    class="message-input" 
+                    placeholder="Ask me about digital marketing strategies, SEO, social media, PPC, content marketing, analytics, or any other marketing topic..."
+                    rows="1"
+                ></textarea>
+                <div class="input-actions">
+                    <button class="voice-btn" id="voiceBtn" title="Voice Input">
+                        <i class="fas fa-microphone"></i>
+                    </button>
+                    <button class="send-btn" id="sendBtn">
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+            <div class="input-footer">
+                <small>Powered by NVIDIA NIM AI • Your conversations are private</small>
+            </div>
+        </div>
+    </div>
+
+    <!-- Help Modal -->
+    <div class="modal" id="helpModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>How to use Digital Marketing AI</h3>
+                <button class="close-btn" id="closeHelpModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="help-section">
+                    <h4><i class="fas fa-lightbulb"></i> What you can ask about:</h4>
+                    <ul>
+                        <li><strong>Business Promotion:</strong> "I have a coffee shop, help me promote on Instagram"</li>
+                        <li><strong>SEO Strategy:</strong> Keywords, website optimization, local SEO, content strategy</li>
+                        <li><strong>Social Media Marketing:</strong> Platform strategies, hashtags, content ideas, engagement</li>
+                        <li><strong>Brand Building:</strong> Business names, brand voice, messaging, visual content</li>
+                        <li><strong>Implementation:</strong> Step-by-step plans, tools needed, timelines, success metrics</li>
+                        <li><strong>Industry Specific:</strong> Restaurant, e-commerce, fitness, beauty, tech, etc.</li>
+                    </ul>
+                </div>
+                <div class="help-section">
+                    <h4><i class="fas fa-keyboard"></i> Quick Tips:</h4>
+                    <ul>
+                        <li>Use specific questions for better answers</li>
+                        <li>Ask for step-by-step guides</li>
+                        <li>Request examples and case studies</li>
+                        <li>Ask for the latest trends and updates</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- API Key Modal -->
+    <div class="modal" id="apiKeyModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Setup Required</h3>
+                <button class="close-btn" id="closeApiModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p>This chatbot is now powered by NVIDIA NIM API with the Llama 4 Maverick model.</p>
+                <p>Your API key is already configured on the server.</p>
+                <div class="api-key-input">
+                    <label for="apiKeyInput">Current API Key:</label>
+                    <input type="password" id="apiKeyInput" value="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" readonly>
+                    <small>Key is configured on the server</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="gemini-chatbot.js"></script>
+</body>
+</html>
