@@ -253,7 +253,3 @@ This project is open source and available under the [MIT License](LICENSE).
 - [ ] Team collaboration features
 
 ---
-
-**Built with ❤️ for digital marketers everywhere**
-
-*Powered by Google Gemini AI*
